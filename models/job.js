@@ -1,32 +1,34 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema;
 
 const jobSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
       trim: true,
-      maxlength: 50,
     },
     description: {
       type: String,
-      required: true,
-      maxlength: 3000,
-      minlength: 100,
-      trim: true,
+      default: "",
     },
     salary: {
-      type: Number | String,
-      default: "Best in the industry",
+      type: Number,
+      default: 0,
     },
     category: {
       type: String,
-      required: true,
       trim: true,
     },
-    // To do
-    companyInfo: {
+    companyDetails: {
+      type: ObjectId,
+      ref: "Company",
+    },
+    companyId: {
       type: String,
+    },
+    applications: {
+      type: Array,
+      default: [],
     },
   },
   { timestamps: true }

@@ -1,34 +1,53 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema;
 
+// User schema
 const userSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: true,
-      maxlength: 20,
       trim: true,
     },
     lastName: {
       type: String,
-      required: true,
-      maxlength: 20,
       trim: true,
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "email is required"],
+      lowercase: true,
       trim: true,
-      unique: true,
-    },
-    phoneNumber: {
-      type: String,
-      required: true,
-      unique: true,
-      maxlength: 10,
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "password is required"],
+    },
+    phoneNumber: {
+      type: String,
+    },
+    qualification: {
+      type: String,
+      default: "",
+    },
+    experience: {
+      type: Number,
+      default: 0,
+    },
+    appliedJobs: {
+      type: Array,
+      default: [],
+    },
+    description: {
+      type: String,
+      default: "",
+    },
+    desiredCategory: {
+      type: ObjectId,
+      ref: "Category",
+    },
+    role: {
+      type: String,
+      default: "user",
     },
   },
   { timestamps: true }

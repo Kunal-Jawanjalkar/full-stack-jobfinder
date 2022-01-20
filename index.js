@@ -26,10 +26,13 @@ app.use(cors());
 
 // All Routes
 const authRoutes = require("./routes/auth");
+const jobRoutes = require("./routes/jobroutes");
 app.use("/api", authRoutes);
+app.use("/api/job", jobRoutes);
 
+// make server listen on port
 app.listen(port, () => {
   console.log(
-    `Server running in ${process.env.NODE_ENV} env on port ${port}...`
+    `Server running in ${process.env.NODE_ENV} mode on port ${port}...`
   );
 });

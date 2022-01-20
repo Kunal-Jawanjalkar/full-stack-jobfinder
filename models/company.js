@@ -1,38 +1,43 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema;
 
 const companySchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
-      maxlength: 50,
       trim: true,
     },
     email: {
       type: String,
-      required: true,
-      unique: true,
+      lowercase: true,
+      trim: true,
     },
     phoneNumber: {
       type: String,
-      required: true,
-      unique: true,
-      maxlength: 10,
+    },
+    password: {
+      type: String,
     },
     description: {
       type: String,
-      max: [2000, "description should not be more than 2000 characters"],
-      min: [2000, "description should not be less than 100 characters"],
-    },
-    //   TO DO
-    cateogory: {
-      type: String,
-    },
-    encryPassword: {
-      type: String,
+      default: "",
     },
     location: {
       type: String,
+      default: "",
+    },
+    jobOpenings: {
+      type: Array,
+      default: [],
+    },
+    role: {
+      type: String,
+      default: "company",
+    },
+    //   TO DO
+    category: {
+      type: ObjectId,
+      ref: "Category",
     },
   },
   { timestamps: true }
