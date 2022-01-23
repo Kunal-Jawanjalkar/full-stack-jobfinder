@@ -16,4 +16,7 @@
 - `Server running in development mode on port 8000... DB CONNECTED`
 
 ### for frontend
-- cd 
+- cd jobfinder_frontend
+- `npm install ` or `yarn install`
+- for web run `yarn web`
+- for android run `npx react-native run-android`
