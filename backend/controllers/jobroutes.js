@@ -19,7 +19,7 @@ exports.createJob = async (req, res) => {
       req.body.companyId,
       companyupdate
     ).exec();
-    if (savedJob && updatedCompanys)
+    if (savedJob && updatedCompany)
       return res.status(200).json({ msg: "job saved" });
   } catch (error) {
     console.log(error);

@@ -1,32 +1,43 @@
-import {View, ScrollView, FlatList} from 'react-native';
-import React, {useState} from 'react';
+import {View, ScrollView, FlatList, Platform} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {ListItem, Text} from 'react-native-elements';
+import useFetch from '../../../hooks/useFetch';
+import {baseUrl} from '../../../helpers/companyRequest';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootState} from '../../../redux/store';
+import {ICompanyDetails} from '../../../@types/company';
+import {requestJobOpenings} from '../../../redux/companySlice';
 
 const CompanyDashboard = () => {
-  const [jobOpenings, setJobOpenings] = useState([
-    {title: 'React native developer', applications: 10},
-    {title: 'React  developer', applications: 12},
-    {title: 'Nodejs developer', applications: 14},
-    {title: 'Django developer', applications: 10},
-    {title: 'Python developer', applications: 17},
-  ]);
+  const [currentJobOpenings, setCurrentJobOpenings] = useState([]);
+  // react redux hoooks
+  const jobOpenings = useSelector(
+    (state: RootState) => state.company.currentJobOpenings,
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(requestJobOpenings());
+    setCurrentJobOpenings(jobOpenings);
+  }, [jobOpenings]);
+
   return (
-    <ScrollView>
+    <ScrollView style={{marginHorizontal: Platform.OS === 'web' ? 50 : 10}}>
       <Text h4 style={{textAlign: 'center', marginVertical: 10}}>
         Current Job Openings
       </Text>
-      {jobOpenings.map((job, index) => {
+      {currentJobOpenings.map((job, index) => {
         return (
           <ListItem
             key={index}
             bottomDivider
             hasTVPreferredFocus={undefined}
             tvParallaxProperties={undefined}>
-            <ListItem.Content>
+            <ListItem.Content style={{flexDirection: 'column'}}>
               <ListItem.Title>{job.title}</ListItem.Title>
-              <ListItem.Subtitle>
-                {job.applications} Applications
-              </ListItem.Subtitle>
+
+              <Text> {job.applications.length} Applications</Text>
+              <Text> description : {job.description}</Text>
             </ListItem.Content>
           </ListItem>
         );

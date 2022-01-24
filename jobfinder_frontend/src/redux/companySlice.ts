@@ -22,6 +22,10 @@ interface ICompanyState {
   isCreateJobError: boolean;
   // company details
   companyDetails: ICompanyDetails;
+  isJobOpeningsLoading: boolean;
+  isJobOpeningSuccess: boolean;
+  isJobOpeningsError: boolean;
+  currentJobOpenings: any[];
 }
 
 const initialState: ICompanyState = {
@@ -38,6 +42,11 @@ const initialState: ICompanyState = {
   isCreateJobSuccess: false,
   isCreateJobError: false,
   companyDetails: {} as ICompanyDetails,
+  // request current job openinngs
+  isJobOpeningsLoading: false,
+  isJobOpeningSuccess: false,
+  isJobOpeningsError: false,
+  currentJobOpenings: [],
 };
 
 export const companySlice = createSlice({
@@ -100,7 +109,7 @@ export const companySlice = createSlice({
         isCreateJobError: false,
       };
     },
-    createJobSuccess: (state, action) => {
+    createJobSuccess: state => {
       return {
         ...state,
         isCreateJobLoading: false,
@@ -108,12 +117,38 @@ export const companySlice = createSlice({
         isCreateJobError: false,
       };
     },
-    createJobError: (state, action) => {
+    createJobError: state => {
       return {
         ...state,
         isCreateJobLoading: false,
         isCreateJobSuccess: false,
         isCreateJobError: true,
+      };
+    },
+    requestJobOpenings: state => {
+      return {
+        ...state,
+        isJobOpeningsLoading: true,
+        isJobOpeningSuccess: false,
+        isJobOpeningsError: false,
+      };
+    },
+    JobOpeningsSuccess: (state, action) => {
+      return {
+        ...state,
+        isJobOpeningsLoading: false,
+        isJobOpeningSuccess: true,
+        isJobOpeningsError: false,
+        currentJobOpenings: action.payload,
+      };
+    },
+    jobOpeningsError: state => {
+      return {
+        ...state,
+        ...state,
+        isJobOpeningsLoading: false,
+        isJobOpeningSuccess: false,
+        isJobOpeningsError: true,
       };
     },
   },
@@ -130,6 +165,9 @@ export const {
   requestCreateJob,
   createJobSuccess,
   createJobError,
+  requestJobOpenings,
+  JobOpeningsSuccess,
+  jobOpeningsError,
 } = companySlice.actions;
 
 export default companySlice.reducer;

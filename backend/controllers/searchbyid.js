@@ -55,7 +55,7 @@ exports.getCompanyById = async (req, res) => {
       category,
       createdAt,
       updatedAt,
-    } = user;
+    } = company;
     if (company)
       return res.status(200).json({
         _id,

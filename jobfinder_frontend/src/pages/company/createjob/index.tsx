@@ -25,6 +25,7 @@ const CreateJob = () => {
       setCategory('');
       setDescription('');
       setSalary('');
+      setSuccessMessage('Job created successfully');
     }
     const timeout = setTimeout(() => {
       setSuccessMessage('');
@@ -60,6 +61,11 @@ const CreateJob = () => {
       <Text h4 style={{textAlign: 'center'}}>
         Create A Job
       </Text>
+
+      <Text h4 style={{textAlign: 'center', color: 'green'}}>
+        {successMessage}
+      </Text>
+
       <Input
         onChangeText={title => setTitle(title)}
         value={title}

@@ -22,7 +22,7 @@ mongoose
 
 // MIDDLEWARES
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({ origin: "*" }));
 
 // All Routes
 const authRoutes = require("./routes/auth");
@@ -30,6 +30,7 @@ const jobRoutes = require("./routes/jobroutes");
 const searchbyid = require("./routes/searchbyid");
 app.use("/api", authRoutes);
 app.use("/api", jobRoutes);
+app.use("/api", searchbyid);
 
 // make server listen on port
 app.listen(port, () => {

@@ -1,5 +1,7 @@
 export interface ICompanyDetails {
-  jwt: Object;
+  jwt: {
+    token: String;
+  };
   _id: String;
   email: String;
   name: String;

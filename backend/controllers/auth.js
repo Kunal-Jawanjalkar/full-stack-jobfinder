@@ -53,6 +53,7 @@ exports.userSignup = async (req, res) => {
 exports.companySignup = async (req, res) => {
   // validation
   const data = req.body;
+  console.log(data);
   const error = validateCompanySignup(data);
   if (error) return res.status(400).json(error);
 

@@ -1,10 +1,36 @@
-import {View, Text} from 'react-native';
+import {Platform, View} from 'react-native';
+import {Card, Text} from 'react-native-elements';
 import React from 'react';
-
+import {useSelector, useDispatch} from 'react-redux';
+import {RootState} from '../../../redux/store';
+import {ICompanyDetails} from '../../../@types/company';
 const CompanyProfile = () => {
+  // react redux hoooks
+  const companyDetails: ICompanyDetails = useSelector(
+    (state: RootState) => state.company.companyDetails,
+  );
+
   return (
     <View>
-      <Text>company profile</Text>
+      <Card
+        containerStyle={{marginHorizontal: Platform.OS === 'web' ? 100 : 10}}
+        wrapperStyle={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Card.Title>Welcome, {companyDetails.name}</Card.Title>
+
+        <Card.Divider />
+        <Text h4>Email : {companyDetails.email}</Text>
+        <Card.Divider />
+        <Text h4>PhoneNumber : {companyDetails.phoneNumber}</Text>
+        <Card.Divider />
+        <Text h4>Description : {companyDetails.description}</Text>
+        <Card.Divider />
+        <Text h4>Location : {companyDetails.location}</Text>
+        <Card.Divider />
+        <Text h4>Category : {companyDetails.category}</Text>
+      </Card>
     </View>
   );
 };

@@ -11,8 +11,8 @@ const verifyRole = require("../middlewares/verifyrole");
 const verifyToken = require("../middlewares/verifytoken");
 
 // router level middlewares
-router.use(verifyToken);
-router.use(verifyRole(["user", "company"]));
+// router.use(verifyToken);
+// router.use(verifyRole(["user", "company"]));
 
 // function to create job
 router.post(ROUTES.CREATE_JOB, createJob);

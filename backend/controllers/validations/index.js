@@ -50,7 +50,7 @@ exports.validateCreateJob = (data) => {
     salary: Joi.number().required(),
     category: Joi.string().required(),
     companyDetails: Joi.object().required(),
-    companyId: Joi().string().required(),
+    companyId: Joi.string().required(),
   });
 
   const validate = jobValidationSchema.validate(data);
