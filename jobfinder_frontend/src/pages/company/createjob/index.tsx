@@ -3,7 +3,10 @@ import React, {useEffect, useState} from 'react';
 import {Input, Button, Divider, Text} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../redux/store';
-import {requestCreateJob} from '../../../redux/companySlice';
+import {
+  requestCreateJob,
+  requestJobOpenings,
+} from '../../../redux/companySlice';
 
 const CreateJob = () => {
   const [title, setTitle] = useState('');
@@ -47,6 +50,7 @@ const CreateJob = () => {
           description,
         }),
       );
+      dispatch(requestJobOpenings());
     } else {
       setErrorMessage('All fields are required');
     }

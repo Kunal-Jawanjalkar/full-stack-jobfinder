@@ -1,32 +1,7 @@
-import {
-  AnyAction,
-  createSlice,
-  Dispatch,
-  PayloadAction,
-} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {ICompanyDetails} from '../@types/company';
-
-interface ICompanyState {
-  // company signup states
-  isSignupLoading: boolean;
-  isSignupSuccess: boolean;
-  isSignupError: boolean;
-  // company login states
-  isLoginLoading: boolean;
-  isLoginSuccess: boolean;
-  isLoginError: boolean;
-  // createjob states
-  isCreateJobLoading: boolean;
-  isCreateJobSuccess: boolean;
-  isCreateJobError: boolean;
-  // company details
-  companyDetails: ICompanyDetails;
-  isJobOpeningsLoading: boolean;
-  isJobOpeningSuccess: boolean;
-  isJobOpeningsError: boolean;
-  currentJobOpenings: any[];
-}
+import {ICompanyDetails} from '../@types/@company';
+import {ICompanyState} from '../@types/@company';
 
 const initialState: ICompanyState = {
   // signup
@@ -53,6 +28,9 @@ export const companySlice = createSlice({
   name: 'company',
   initialState: initialState,
   reducers: {
+    resetCompanyState: state => {
+      return {...state, isSignupSuccess: false};
+    },
     requestCompanySignup: (state, action) => {
       state.isSignupLoading = true;
       state.isSignupError = false;
@@ -168,6 +146,7 @@ export const {
   requestJobOpenings,
   JobOpeningsSuccess,
   jobOpeningsError,
+  resetCompanyState,
 } = companySlice.actions;
 
 export default companySlice.reducer;

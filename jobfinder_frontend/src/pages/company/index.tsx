@@ -7,12 +7,16 @@ import CompanyProfile from './profile';
 const Tab = createBottomTabNavigator();
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const CompanyRoutes: React.FC = () => {
+const CompanyRoutes: React.FC = (props: any) => {
+  const {navigation} = props;
   return (
     <>
       {/* <Icon name="md-briefcase-sharp" size={30} color={'black'} /> */}
       <Tab.Navigator screenOptions={{headerShown: false}}>
-        <Tab.Screen name="dashboard" component={CompanyDashboard} />
+        <Tab.Screen
+          name="dashboard"
+          children={() => <CompanyDashboard navigation={navigation} />}
+        />
         <Tab.Screen name="createjob" component={CreateJob} />
         <Tab.Screen name="profile" component={CompanyProfile} />
       </Tab.Navigator>

@@ -16,6 +16,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/store';
 import {requestCompanyLogin} from '../../redux/companySlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {requestUserLogin} from '../../redux/userSlice';
 
 const Login: React.FC = (props: any) => {
   const {navigation} = props;
@@ -29,11 +30,11 @@ const Login: React.FC = (props: any) => {
   // react redux hooks
   const dispatch = useDispatch();
   const companyState = useSelector((state: RootState) => state.company);
+  const userState = useSelector((state: RootState) => state.user);
 
   // navigate to company dashboard if company login is successfull
   useEffect(() => {
     if (companyState.isLoginSuccess) {
-      storeToken(companyState.companyDetails.jwt);
       navigation.navigate('company-routes');
     } else if (companyState.isLoginError) {
       setErrorMessage('Error occured while logging in ');
@@ -46,6 +47,22 @@ const Login: React.FC = (props: any) => {
       };
     }
   }, [companyState.isLoginSuccess]);
+
+  // navigate to company dashboard if company login is successfull
+  useEffect(() => {
+    if (userState.isUserLoginSuccess) {
+      navigation.navigate('user-routes');
+    } else if (userState.isUserLoginError) {
+      setErrorMessage('Error occured while logging in ');
+      const timeout = setTimeout(() => {
+        setErrorMessage('');
+      }, 2800);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [userState.isUserLoginSuccess]);
 
   // Refrence functions
   const handleCompanyPress = () => {
@@ -73,8 +90,15 @@ const Login: React.FC = (props: any) => {
           setErrorMessage('');
         }, 2800);
       }
-    } else if (true) {
-      // code for user login
+    } else if (individualChecked) {
+      if (email && password) {
+        dispatch(requestUserLogin({email, password}));
+      } else {
+        setErrorMessage('email and password is required');
+        setTimeout(() => {
+          setErrorMessage('');
+        }, 2800);
+      }
     }
   };
   // store token in async storage

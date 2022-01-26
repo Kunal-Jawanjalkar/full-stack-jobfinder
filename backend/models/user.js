@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema(
       default: 0,
     },
     appliedJobs: {
-      type: Array,
+      type: [{ type: ObjectId, ref: "Job" }],
       default: [],
     },
     description: {

@@ -1,11 +1,13 @@
+const { request } = require("express");
 const Company = require("../models/company");
+const Job = require("../models/job");
 const User = require("../models/user");
 
 // get user by id
 exports.getUserById = async (req, res) => {
   const userId = req.params.userId;
   try {
-    const user = await User.findById(userId).exec();
+    const user = await User.findById(userId).populate("appliedJobs").exec();
     const {
       _id,
       firstName,
@@ -70,6 +72,28 @@ exports.getCompanyById = async (req, res) => {
         createdAt,
         updatedAt,
       });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
+exports.getJobsByCompanyId = async (req, res) => {
+  try {
+    const companyId = req.params.companyId;
+    const jobs = await Job.find({ companyId })
+      .populate({
+        path: "companyDetails",
+        select: [
+          "name",
+          "category",
+          "email",
+          "phoneNumber",
+          "location",
+          "jobOpenings",
+        ],
+      })
+      .exec();
+    res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }

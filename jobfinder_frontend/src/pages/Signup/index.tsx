@@ -13,8 +13,12 @@ import {
 } from 'react-native-elements';
 import signupStyles from './styles';
 import {useSelector, useDispatch} from 'react-redux';
-import {requestCompanySignup} from '../../redux/companySlice';
+import {
+  requestCompanySignup,
+  resetCompanyState,
+} from '../../redux/companySlice';
 import {RootState} from '../../redux/store';
+import {requestUserSignup, resetUserState} from '../../redux/userSlice';
 // signup prop types
 type TSignupProps = {
   navigation: any;
@@ -27,6 +31,7 @@ const Signup: React.FC<TSignupProps> = props => {
 
   // react-redux hooks
   const companyState = useSelector((state: RootState) => state.company);
+  const userState = useSelector((state: RootState) => state.user);
   console.log('companyState', companyState);
   const dispatch = useDispatch();
 
@@ -51,8 +56,59 @@ const Signup: React.FC<TSignupProps> = props => {
     password: '',
     confirmPassword: '',
   });
+  // Error states
+  const [error, setError] = useState('');
+  // success states
+  const [successMessage, setSuccessMessage] = useState('');
 
   const {theme} = useTheme();
+
+  // show success messages on signup success and redirect to login
+  // for user signup
+  useEffect(() => {
+    if (userState.isUserSignupSuccess) {
+      setSuccessMessage('Signup successfull login to continue ');
+      setUserInputs({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+        qualification: '',
+        experience: '',
+        password: '',
+        confirmPassword: '',
+      });
+      const timeout = setTimeout(() => {
+        setSuccessMessage('');
+        // navigation.navigate('Login');
+      }, 2000);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [userState.isUserSignupSuccess]);
+  // for company signup
+  useEffect(() => {
+    if (companyState.isSignupSuccess) {
+      setSuccessMessage('Signup successfull login to continue ');
+      setCompanyInputs({
+        name: '',
+        email: '',
+        phoneNumber: '',
+        location: '',
+        category: '',
+        password: '',
+        confirmPassword: '',
+      });
+      const timeout = setTimeout(() => {
+        setSuccessMessage('');
+        // navigation.navigate('Login');
+      }, 2000);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [companyState.isSignupSuccess]);
 
   // Refrence functions
   const handleCompanyPress = () => {
@@ -63,22 +119,83 @@ const Signup: React.FC<TSignupProps> = props => {
     setCompanyChecked(false);
     setIndividualChecked(true);
   };
+  // company signup function
   const handleCompanySignup = () => {
-    const {name, email, phoneNumber, category, password, location} =
-      companyInputs;
-
-    dispatch(
-      requestCompanySignup({
-        name,
-        email,
-        phoneNumber,
-        category,
-        password,
-        location,
-      }),
-    );
+    const {
+      name,
+      email,
+      phoneNumber,
+      category,
+      password,
+      location,
+      confirmPassword,
+    } = companyInputs;
+    // validate if all the fields are filled or not
+    if (Object.values(companyInputs).some(val => val !== '')) {
+      // check if both passwords match
+      if (password === confirmPassword) {
+        dispatch(
+          requestCompanySignup({
+            name,
+            email,
+            phoneNumber,
+            category,
+            password,
+            location,
+          }),
+        );
+      } else {
+        setError('passwords dont match');
+        setTimeout(() => {
+          setError('');
+        }, 2800);
+      }
+    } else {
+      setError('all fields are required');
+      setTimeout(() => {
+        setError('');
+      }, 2800);
+    }
   };
-
+  // user signup function verify all the input fields and then signup the user
+  const handleUserSignup = () => {
+    const {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      qualification,
+      experience,
+      password,
+      confirmPassword,
+    } = userInputs;
+    // check if all the inputs are filled
+    if (Object.values(userInputs).some(val => val !== '')) {
+      if (password === confirmPassword) {
+        dispatch(
+          requestUserSignup({
+            firstName,
+            lastName,
+            email,
+            phoneNumber,
+            qualification,
+            experience,
+            password,
+          }),
+        );
+      } else {
+        setError('passwords dont match');
+        setTimeout(() => {
+          setError('');
+        }, 2800);
+      }
+    } else {
+      setError('All fields are required');
+      setTimeout(() => {
+        setError('');
+      }, 2800);
+    }
+  };
   return (
     <ScrollView>
       <View style={signupStyles.container}>
@@ -105,7 +222,8 @@ const Signup: React.FC<TSignupProps> = props => {
             onPress={handleIndividualPress}
           />
         </View>
-
+        <Text style={{color: 'red'}}>{error}</Text>
+        <Text style={{color: 'green'}}>{successMessage}</Text>
         {companyChecked && (
           <>
             <Input
@@ -262,10 +380,7 @@ const Signup: React.FC<TSignupProps> = props => {
             />
 
             <Divider orientation="horizontal" width={8} />
-            <Button
-              title="Sign up"
-              onPress={() => navigation.navigate('user-routes')}
-            />
+            <Button title="Sign up" onPress={() => handleUserSignup()} />
             <Divider orientation="horizontal" width={8} />
             <Button
               title="back to login"

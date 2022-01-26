@@ -3,7 +3,7 @@ import {Card, Text} from 'react-native-elements';
 import React from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../../redux/store';
-import {ICompanyDetails} from '../../../@types/company';
+import {ICompanyDetails} from '../../../@types/@company';
 const CompanyProfile = () => {
   // react redux hoooks
   const companyDetails: ICompanyDetails = useSelector(
@@ -13,7 +13,7 @@ const CompanyProfile = () => {
   return (
     <View>
       <Card
-        containerStyle={{marginHorizontal: Platform.OS === 'web' ? 100 : 10}}
+        containerStyle={{marginHorizontal: Platform.OS === 'web' ? 400 : 10}}
         wrapperStyle={{
           justifyContent: 'center',
           alignItems: 'center',
@@ -21,15 +21,15 @@ const CompanyProfile = () => {
         <Card.Title>Welcome, {companyDetails.name}</Card.Title>
 
         <Card.Divider />
-        <Text h4>Email : {companyDetails.email}</Text>
+        <Text>Email : {companyDetails.email}</Text>
         <Card.Divider />
-        <Text h4>PhoneNumber : {companyDetails.phoneNumber}</Text>
+        <Text>PhoneNumber : {companyDetails.phoneNumber}</Text>
         <Card.Divider />
-        <Text h4>Description : {companyDetails.description}</Text>
+        <Text>Description : {companyDetails.description}</Text>
         <Card.Divider />
-        <Text h4>Location : {companyDetails.location}</Text>
+        <Text>Location : {companyDetails.location}</Text>
         <Card.Divider />
-        <Text h4>Category : {companyDetails.category}</Text>
+        <Text>Category : {companyDetails.category}</Text>
       </Card>
     </View>
   );

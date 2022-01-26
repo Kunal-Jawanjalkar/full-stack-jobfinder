@@ -1,4 +1,4 @@
-export const baseUrl = 'http://localhost:8000/api';
+export const baseUrl = 'http://192.168.0.103:8000/api';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // api requests

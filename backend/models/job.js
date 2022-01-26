@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
+const { Schema } = mongoose;
 
-const jobSchema = new mongoose.Schema(
+const jobSchema = new Schema(
   {
     title: {
       type: String,
@@ -20,15 +20,19 @@ const jobSchema = new mongoose.Schema(
       trim: true,
     },
     companyDetails: {
-      type: ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Company",
     },
     companyId: {
       type: String,
       default: "",
     },
+    companyName: {
+      type: String,
+      default: "",
+    },
     applications: {
-      type: Array,
+      type: [{ type: Schema.Types.ObjectId, ref: "User" }],
       default: [],
     },
   },

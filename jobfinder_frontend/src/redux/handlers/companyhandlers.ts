@@ -1,10 +1,6 @@
 import {call, select, put} from '@redux-saga/core/effects';
-import {ICompanyDetails} from '../../@types/company';
-import {
-  getToken,
-  apiRequest,
-  companySignupApi,
-} from '../../helpers/companyRequest';
+import {ICompanyDetails} from '../../@types/@company';
+import {getToken, apiRequest, companySignupApi} from '../../helpers/requests';
 import {
   createJobSuccess,
   createJobError,
@@ -19,7 +15,7 @@ import {
 import {RootState} from '../store';
 
 // baseurl of the api
-const baseUrl = `http://192.168.0.101:8000/api`;
+const baseUrl = `http://192.168.0.103:8000/api`;
 
 // company signup handler
 export function* companySignupHandler(action) {
@@ -54,28 +50,20 @@ export function* createJobHandler(action) {
   const companyDetails: ICompanyDetails = yield select(
     (state: RootState) => state.company.companyDetails,
   );
-  const {name, email, phoneNumber, _id, description, location, category} =
-    companyDetails;
+
   try {
     const response = yield call(apiRequest, {
       url: `${baseUrl}/create-job`,
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
       },
       body: {
         ...action.payload,
-        companyId: _id,
-        companyDetails: {
-          name,
-          email,
-          phoneNumber,
-          _id,
-          description,
-          location,
-          category,
-        },
+        companyId: companyDetails._id,
+        companyDetails: companyDetails._id,
+        companyName: companyDetails.name,
       },
     });
 
@@ -93,11 +81,10 @@ export function* getJobOpeningsHandler() {
     const {_id} = companyDetails;
     const response = yield call(apiRequest, {
       method: 'get',
-      url: `${baseUrl}/company/${_id}`,
+      url: `${baseUrl}/jobs/${_id}`,
       headers: {'Content-Type': 'application/json'},
     });
-    yield put(JobOpeningsSuccess(response.data.jobOpenings));
-    yield put(setCompanyDetails(response.data));
+    yield put(JobOpeningsSuccess(response.data));
   } catch (error) {
     console.log(error);
   }

@@ -29,5 +29,5 @@ router.get(
 // apply for job
 // adds user in the application field of Jobs
 // collection and adds jobId in the applied jobs field of users collection
-router.put(ROUTES.APPLY_FOR_JOB, applyForJob);
+router.post(ROUTES.APPLY_FOR_JOB, applyForJob);
 module.exports = router;

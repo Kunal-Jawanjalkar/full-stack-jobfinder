@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
+const { Schema } = mongoose;
 
-const companySchema = new mongoose.Schema(
+const companySchema = new Schema(
   {
     name: {
       type: String,
@@ -26,10 +26,7 @@ const companySchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    jobOpenings: {
-      type: Array,
-      default: [],
-    },
+    jobOpenings: [{ type: Schema.Types.ObjectId, ref: "Job" }],
     role: {
       type: String,
       default: "company",

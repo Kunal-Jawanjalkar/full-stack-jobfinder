@@ -11,6 +11,7 @@ import CompanyRoutes from './src/pages/company';
 import UserRoutes from './src/pages/user';
 import {Provider} from 'react-redux';
 import {store} from './src/redux/store';
+import ViewApplications from './src/pages/company/viewapplications';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -23,6 +24,10 @@ const App = () => {
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="company-routes" component={CompanyRoutes} />
             <Stack.Screen name="user-routes" component={UserRoutes} />
+            <Stack.Screen
+              name="view-applications"
+              component={ViewApplications}
+            />
           </Stack.Navigator>
         </ThemeProvider>
       </NavigationContainer>
